@@ -1,6 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+import os
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
@@ -10,11 +11,19 @@ from flask_jwt_extended import jwt_required
 
 #create flask app
 api = Blueprint('api', __name__)
-app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
-jwt = JWTManager(app)
 
-@api.route('/token', methods=['POST'])
+
+
+# Create a route to authenticate your users and return JWTs. The
+# create_access_token() function is used to actually generate the JWT.
+@app.route("/token", methods=["POST"])
 def create_token():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    if email != "test" or password != "test":
+        return jsonify({"msg": "Bad username or password"}), 401
 
-    # Get the request body data
-    return jsonify(response_body), 200
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+
+
