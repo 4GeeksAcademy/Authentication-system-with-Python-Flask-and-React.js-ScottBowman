@@ -5,24 +5,27 @@ import "../../styles/home.css";
 
 export const Login = () => {
 	const { store, actions } = useContext(Context);
-	const {email, setEmail} = useState("");
-	const {password, setPassword} = useState("");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const token = sessionStorage.getItem("token");
-
+	const myHeaders = new Headers();
+	myHeaders.append("Content-Type", "application/json");
+	
+	
 	const handleClick = () => {
 		const opts = 
 		{
 			method: 'POST',
-			Headers: {
-				'Content-Type': 'application/json'
-			},
+			headers: myHeaders,
+		
+
 			body: JSON.stringify({
 				email: email,
 				password: password
 			}),
 		
 		}
-		fetch('https://super-waddle-jj5w6g7vxx9rf5rv5-3001.app.github.dev/api/token')
+		fetch('https://super-waddle-jj5w6g7vxx9rf5rv5-3001.app.github.dev/api/login', opts)
 			.then(resp => {
 				if(resp.status === 200) 
 					return resp.json();
@@ -43,8 +46,8 @@ export const Login = () => {
 					"You are logged in with this token" + token
 					) : (
 					<div>
-						<input type="text" placeholder="Email" value={email} onChange={() => setEmail(e.target.value)} />
-						<input type="password" placeholder="Password" value={password} onChange={() => setPassword(e.target.value)} />
+						<input type="text" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+						<input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
 						<button onClick={handleClick}>Login</button>
 					</div>
 				)}	
