@@ -1,4 +1,6 @@
 const getState = ({ getStore, getActions, setStore }) => {
+	let backend=process.env.BACKEND_URL
+
 	return {
 	  store: {
 		token: null,
@@ -40,7 +42,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		  };
 		  try {
 			const resp = await fetch(
-			  "https://super-waddle-jj5w6g7vxx9rf5rv5-3001.app.github.dev/api/register",
+			  backend +"/api/register",
 			  opts
 			);
 			const data = await resp.json();
@@ -87,7 +89,7 @@ const getState = ({ getStore, getActions, setStore }) => {
   
 		  try {
 			const resp = await fetch(
-			  "https://super-waddle-jj5w6g7vxx9rf5rv5-3001.app.github.dev/api/token",
+			  backend + "/api/token",
 			  opts
 			);
 			if (resp.status !== 200) {
@@ -114,7 +116,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		  try {
 			// fetching data from the backend
 			const resp = await fetch(
-			  "https://super-waddle-jj5w6g7vxx9rf5rv5-3001.app.github.dev/api/hello",
+			  backend + "/api/hello",
 			  opts
 			);
 			const data = await resp.json();
